@@ -11,6 +11,7 @@ function RegistrationForm(props) {
 
 const handleSubmit=(e)=>{
     e.preventDefault();
+    const valid =validation();
 }
 
 const handleChange=(e)=>{
@@ -26,7 +27,7 @@ const validEmail = (email) => {
     const regex = /^\S+@\S+\.\S+$/;
     return regex.test(email)
 }
-const [errors, setErrors] = useState({ email: "", password: "" })
+const [errors, setErrors] = useState({ first_name:"",last_name:"",email: "", password: "",confirm_password:"" })
 
     const validation = () => {
         let newErrors = {};
@@ -47,6 +48,8 @@ const [errors, setErrors] = useState({ email: "", password: "" })
         }
         if(!registrationData.confirm_password){
             newErrors.confirm_password="Please confirm your Password"
+        }else if(registrationData.confirm_password!==registrationData.password){
+            newErrors.confirm_password="Confirm password must be same as password"
         }
 
         setErrors(newErrors);
@@ -56,12 +59,12 @@ const [errors, setErrors] = useState({ email: "", password: "" })
   return (
     <div className="wrapper">
         <div className="form-left">
-            <h2 className="text-uppercase">Information</h2>
+            <h2 className="text-uppercase">Already have an Account</h2>
             <div className="form-field">
                 <input onClick={()=>props.onFormSwitch('LoginForm')} 
                 type="submit" 
                 className="account" 
-                value='Have an Account?'/>
+                value='LOGIN'/>
             </div>
         </div>
         <form className="form-right" onSubmit={handleSubmit}>
@@ -76,7 +79,7 @@ const [errors, setErrors] = useState({ email: "", password: "" })
                     value={registrationData.first_name}
                     onChange={handleChange}/>
                 </div>
-                
+                <div className='error'>{errors.first_name}</div>
                 <div className="last_name">
                     <label>Last Name</label>
                     <input type="text" 
@@ -86,7 +89,7 @@ const [errors, setErrors] = useState({ email: "", password: "" })
                     value={registrationData.last_name}
                     onChange={handleChange}/>
                 </div>
-                
+                <div className='error'>{errors.last_name}</div>
             </div>
             <div className="email">
                 <label>Your Email</label>
@@ -97,6 +100,7 @@ const [errors, setErrors] = useState({ email: "", password: "" })
                 value={registrationData.email}
                 onChange={handleChange}/>
             </div>
+            <div className='error'>{errors.email}</div>
             <div className="row">
                 <div className="password">
                     <label>Password</label>
@@ -107,7 +111,7 @@ const [errors, setErrors] = useState({ email: "", password: "" })
                     value={registrationData.password}
                     onChange={handleChange}/>
                 </div>
-            
+                <div className='error'>{errors.password}</div>
                 <div className="confirm_password">
                     <label>Comfirm Password</label>
                     <input type="password" 
@@ -117,11 +121,12 @@ const [errors, setErrors] = useState({ email: "", password: "" })
                     value={registrationData.confirm_password}
                     onChange={handleChange}/>
                 </div>
-                
+                <div className='error'>{errors.confirm_password}</div>
             </div>
             <div className="mb-3">
                 <label className="option">I agree to the <a href="#">Terms and Conditions</a>
-                    <input type="checkbox"/>
+                    <input type="checkbox"
+                    name="checkbox"/>
                     <span className="checkmark"></span>
                 </label>
             </div>
@@ -131,6 +136,7 @@ const [errors, setErrors] = useState({ email: "", password: "" })
                 className="register" 
                 name="register"/>
             </div>
+        
         </form>
     </div>
   );
